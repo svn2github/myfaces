@@ -66,7 +66,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}/assembly-lib</outputDirectory>
-                            <excludeArtifactIds>jstl,tomahawk12,tomahawk20</excludeArtifactIds>
+                            <excludeArtifactIds>jstl,tomahawk12,tomahawk20,tomahawk21</excludeArtifactIds>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>false</overWriteSnapshots>
                             <overWriteIfNewer>true</overWriteIfNewer>
@@ -160,7 +160,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}/assembly-lib12</outputDirectory>
-                            <excludeArtifactIds>jstl,tomahawk,tomahawk20</excludeArtifactIds>
+                            <excludeArtifactIds>jstl,tomahawk,tomahawk20,tomahawk21</excludeArtifactIds>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>false</overWriteSnapshots>
                             <overWriteIfNewer>true</overWriteIfNewer>
@@ -254,7 +254,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}/assembly-lib20</outputDirectory>
-                            <excludeArtifactIds>jstl,tomahawk,tomahawk12</excludeArtifactIds>
+                            <excludeArtifactIds>jstl,tomahawk,tomahawk12,tomahawk21</excludeArtifactIds>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>false</overWriteSnapshots>
                             <overWriteIfNewer>true</overWriteIfNewer>
@@ -305,6 +305,100 @@
                             <outputDirectory>${project.build.directory}/src20</outputDirectory>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>copy-javadoc21</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.tomahawk</groupId>
+                                    <artifactId>tomahawk21</artifactId>
+                                    <version>${project.version}</version>
+                                    <classifier>javadoc</classifier>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/javadoc21</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-lib21</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.tomahawk</groupId>
+                                    <artifactId>tomahawk21</artifactId>
+                                    <version>${project.version}</version>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/assembly-lib21</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-lib21-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/assembly-lib21</outputDirectory>
+                            <excludeArtifactIds>jstl,tomahawk,tomahawk12,tomahawk20</excludeArtifactIds>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-tlddoc21</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.tomahawk</groupId>
+                                    <artifactId>tomahawk21</artifactId>
+                                    <version>${project.version}</version>
+                                    <classifier>tlddoc</classifier>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/tlddoc21</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-source21</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.tomahawk</groupId>
+                                    <artifactId>tomahawk21</artifactId>
+                                    <version>${project.version}</version>
+                                    <classifier>sources</classifier>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.shared</groupId>
+                                    <artifactId>myfaces-shared-tomahawk</artifactId>
+                                    <version>${myfaces-shared21-version}</version>
+                                    <classifier>sources</classifier>
+                                </artifactItem>
+
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/src21</outputDirectory>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
@@ -353,6 +447,22 @@
                             <finalName>tomahawk20-${project.version}</finalName>
                             <outputDirectory>target/assembly/out</outputDirectory>
                             <workDirectory>target/assembly/work20</workDirectory>
+                        </configuration>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attached</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>makeassembly21</id>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assembly/bin21.xml</descriptor>
+                                <descriptor>src/main/assembly/src21.xml</descriptor>
+                            </descriptors>
+                            <finalName>tomahawk21-${project.version}</finalName>
+                            <outputDirectory>target/assembly/out</outputDirectory>
+                            <workDirectory>target/assembly/work21</workDirectory>
                         </configuration>
                         <phase>package</phase>
                         <goals>
@@ -483,5 +593,10 @@
         <artifactId>tomahawk20</artifactId>
         <version>${project.version}</version>
       </dependency>
-    </dependencies>
+      <dependency>
+        <groupId>org.apache.myfaces.tomahawk</groupId>
+        <artifactId>tomahawk21</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+   </dependencies>
 </project>
