@@ -3,12 +3,12 @@
     <parent>
         <groupId>org.apache.myfaces.tomahawk</groupId>
         <artifactId>tomahawk-examples-project</artifactId>
-        <version>1.1.14-SNAPSHOT</version>
+        <version>1.1.14</version>
     </parent>
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/examples/simple20</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/examples/simple20</developerConnection>
-        <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk/examples/simple20</url>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk/tags/tomahawk-project-1.1.14/examples/simple20</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/tags/tomahawk-project-1.1.14/examples/simple20</developerConnection>
+        <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/tags/tomahawk-project-1.1.14/examples/simple20</url>
     </scm>   
     <artifactId>myfaces-example-simple20</artifactId>
     <packaging>war</packaging>
