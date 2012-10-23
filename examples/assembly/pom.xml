@@ -118,7 +118,7 @@
                         <id>make_assembly_src</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>assembly</goal>
+                            <goal>attached</goal>
                         </goals>
                         <configuration>
                             <descriptors>   
@@ -134,7 +134,7 @@
                         <id>make_assembly_bin</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>assembly</goal>
+                            <goal>attached</goal>
                         </goals>
 	                    <configuration>
 	                        <descriptors>   
