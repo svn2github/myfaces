@@ -36,10 +36,10 @@ org_apache_myfaces_CalendarInitData = function()
     this.todayDateFormat = null;
     this.weekString = "Wk";
     this.scrollLeftMessage = "Click to scroll to previous month. Hold mouse button to scroll automatically.";
-    this.scrollRightMessage = "Click to scroll to next month. Hold mouse button to scroll automatically."
-    this.selectMonthMessage = "Click to select a month."
-    this.selectYearMessage = "Click to select a year."
-    this.selectDateMessage = "Select [date] as date." // do not replace [date], it will be replaced by date.
+    this.scrollRightMessage = "Click to scroll to next month. Hold mouse button to scroll automatically.";
+    this.selectMonthMessage = "Click to select a month.";
+    this.selectYearMessage = "Click to select a year.";
+    this.selectDateMessage = "Select [date] as date."; // do not replace [date], it will be replaced by date.
 
     this.popupLeft=false;
 
@@ -47,7 +47,7 @@ org_apache_myfaces_CalendarInitData = function()
     this.dayName = this.startAt == 0 ? new Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat") : new Array("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun");
 
     this.selectMode = "day";
-}
+};
 
 org_apache_myfaces_DateParts = function(sec, min, hour, date, month, year)
 {
@@ -57,7 +57,7 @@ org_apache_myfaces_DateParts = function(sec, min, hour, date, month, year)
     this.date = date;
     this.month = month;
     this.year = year;
-}
+};
 
 org_apache_myfaces_HolidayRec = function(d, m, y, desc)
 {
@@ -65,7 +65,7 @@ org_apache_myfaces_HolidayRec = function(d, m, y, desc)
     this.m = m;
     this.y = y;
     this.desc = desc;
-}
+};
 
 org_apache_myfaces_PopupCalendar = function()
 {
@@ -76,21 +76,24 @@ org_apache_myfaces_PopupCalendar = function()
 
     this.monthConstructed = false;
     this.yearConstructed = false;
-    this.intervalID1;
-    this.intervalID2;
-    this.timeoutID1;
-    this.timeoutID2;
-    this.ctlToPlaceValue;
-    this.ctlNow;
-    this.containerCtl;
+    this.intervalID1 = null;
+    this.intervalID2 = null;
+    this.timeoutID1 = null;
+    this.timeoutID2 = null;
+    this.ctlToPlaceValue = null;
+    this.ctlNow = null;
+    this.containerCtl = null;
     this.dateFormat="MM/dd/yyyy";
-    this.nStartingYear;
+    this.nStartingYear = null;
     this.bPageLoaded = false;
 
     // Detect whether the browser is Microsoft Internet Explorer.
     // Testing for the presence of document.all is not sufficient, as Opera provides that.
     // However hopefully nothing but IE implements ActiveX..
-    this.ie = window.ActiveXObject ? true : false;
+    // it is only needed to test for ie6 and before ie7 and quirks mode
+    // do not expose the bleed through bug anymore
+    this.ieVersion = this.getInternetExplorerVersion();
+    this.ie6 = this.ieVersion != -1 && this.ieVersion < 7;
 
     this.dom = document.getElementById;
     this.ns4 = document.layers;
@@ -128,7 +131,22 @@ org_apache_myfaces_PopupCalendar = function()
 
     this.myFacesCtlType = "x:inputCalendar";
     this.inputDateClientId;
-}
+};
+
+//http://msdn.microsoft.com/en-us/library/ms537509%28v=vs.85%29.aspx
+org_apache_myfaces_PopupCalendar.prototype.getInternetExplorerVersion = function ()
+    // Returns the version of Internet Explorer or a -1
+    // (indicating the use of another browser).
+{
+    var rv = -1; // Return value assumes failure.
+    if (navigator.appName == 'Microsoft Internet Explorer') {
+        var ua = navigator.userAgent;
+        var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+        if (re.exec(ua) != null)
+            rv = parseFloat(RegExp.$1);
+    }
+    return rv;
+};
 
 org_apache_myfaces_PopupCalendar.prototype._MSECS_PER_DAY = 24*60*60*1000;
 
@@ -147,8 +165,8 @@ org_apache_myfaces_PopupCalendar.prototype._fixPopupDomOrder = function(overDiv)
 org_apache_myfaces_PopupCalendar.prototype._showPopupPostProcess = function(overDiv)
 {
 	
-
-    if (this.ie)
+    //ie6 detection over object inspections
+    if (this.ie6)
     {
         // The iframe created here is a hack to work around an IE bug. In IE,
         // "windowed controls" (esp selectboxes) do not respect the z-index
@@ -164,10 +182,10 @@ org_apache_myfaces_PopupCalendar.prototype._showPopupPostProcess = function(over
         {
             // the source attribute is to avoid a IE error message about non secure content on https connections
             iframe = document.createElement("iframe");
-            iframe.setAttribute("id", overDiv.id + "_IFRAME'");
-            iframe.setAttribute("src", "javascript:false;")
+            iframe.setAttribute("id", overDiv.id + "_IFRAME");
+            iframe.setAttribute("src", "javascript:false;");
             Element.setStyle(iframe, "visibility:hidden; position: absolute; top:0px;left:0px;");
-            
+
             //we can append it lazily since we are late here anyway and everything is rendered
             document.body.appendChild(iframe);
         }
@@ -175,13 +193,13 @@ org_apache_myfaces_PopupCalendar.prototype._showPopupPostProcess = function(over
         // now put the iframe at the appropriate location, and make it visible.
         this._recalculateElement(overDiv);
     }
-}
+};
 
 // IE bug workaround: hide background controls under the specified div; see _showPopupPostProcess.
 // This should be called whenever a popup div is moved.
 org_apache_myfaces_PopupCalendar.prototype._recalculateElement = function(overDiv)
 {
-    if (this.ie)
+    if (this.ie6)
     {
         var iframe = document.getElementById(overDiv.id + "_IFRAME");
 
@@ -191,21 +209,20 @@ org_apache_myfaces_PopupCalendar.prototype._recalculateElement = function(overDi
             // size and position match the div exactly, and set its z-index to just
             // below the div. This hack blocks IE selectboxes from being drawn on top
             // of the div. 
-            var popup = overDiv;
 
-            popup.style.zIndex = 98;
+            overDiv.style.zIndex = 98;
 
-            iframe.style.zIndex = popup.style.zIndex - 1;
-            iframe.style.width = popup.offsetWidth;
-            iframe.style.height = popup.offsetHeight;
-            iframe.style.top = popup.style.top;
-            iframe.style.left = popup.style.left;
+            iframe.style.zIndex = overDiv.style.zIndex - 1;
+            iframe.style.width = overDiv.offsetWidth;
+            iframe.style.height = overDiv.offsetHeight;
+            iframe.style.top = overDiv.style.top;
+            iframe.style.left = overDiv.style.left;
             iframe.style.display = "block";
             iframe.style.visibility = "visible";
             /*we have to set an explicit visible otherwise it wont work*/
         }
     }
-}
+};
 
 // IE bug workaround: unhide background controls that are beneath the specified div; see _showPopupPostProcess.
 // Note that although this is called _showeElement, it is called when the popup is being *hidden*,
@@ -215,24 +232,24 @@ org_apache_myfaces_PopupCalendar.prototype._hidePopupPostProcess = function(over
 {
 	
 
-    if (this.ie)
+    if (this.ie6)
     {
         var iframe = document.getElementById(overDiv.id + "_IFRAME");
         if (iframe) iframe.style.display = "none";
     }
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype.addHoliday = function(d, m, y, desc)
 {
     this.holidays[this.holidaysCounter++] = new org_apache_myfaces_HolidayRec (d, m, y, desc);
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._swapImage = function(srcImg, destImg)
 {
 
     if (srcImg)
         srcImg.setAttribute("src", this.initData.imgDir + destImg+ this.initData.imgDirSuffix);
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._keypresshandler = function()
 {
@@ -243,7 +260,7 @@ org_apache_myfaces_PopupCalendar.prototype._keypresshandler = function()
     {
         this._hideCalendar();
     }
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._clickhandler = function()
 {
@@ -253,22 +270,22 @@ org_apache_myfaces_PopupCalendar.prototype._clickhandler = function()
     }
 
     this.bClickOnCalendar = false;
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._isDaySelectable = function()
 {
   return (this.initData.selectMode == "day");
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._isWeekSelectable = function()
 {
   return (this.initData.selectMode == "week");
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._isMonthSelectable = function()
 {
   return (this.initData.selectMode == "month");
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype.init = function(containerCtl)
 {
@@ -427,7 +444,7 @@ org_apache_myfaces_PopupCalendar.prototype.init = function(containerCtl)
     if (!this.ns4)
     {
         /* Instead use getFullYear() */
-        /*if (!this.ie)
+        /*if (!this.ie6)
             this.yearNow += 1900;*/
 
         this._hideCalendar();
@@ -527,7 +544,7 @@ org_apache_myfaces_PopupCalendar.prototype.init = function(containerCtl)
         this.bPageLoaded = true;
 
     }
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._appendNavToCaption = function(direction)
 {
@@ -546,7 +563,7 @@ org_apache_myfaces_PopupCalendar.prototype._appendNavToCaption = function(direct
     this._appendNbsp(spanLeft);
     this.captionSpan.appendChild(spanLeft);
     this._appendNbsp(spanLeft);
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._createControl = function(direction, spanLeft, imgLeft)
 {
@@ -602,18 +619,18 @@ org_apache_myfaces_PopupCalendar.prototype._createControl = function(direction, 
         clearTimeout(this.timeoutID1);
         clearInterval(this.intervalID1);
     }.bind(this), false);
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._appendNbsp = function(element)
 {
     if (element)
         element.appendChild(document.createTextNode(String.fromCharCode(160)));
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._todayIsDate = function()
 {
     return this.todayDateFormatter.format(this.today);
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._hideCalendar = function()
 {
@@ -631,18 +648,18 @@ org_apache_myfaces_PopupCalendar.prototype._hideCalendar = function()
     this._hidePopupPostProcess(this.selectMonthDiv);
     this._hidePopupPostProcess(this.selectYearDiv);
     this._hidePopupPostProcess(this.calendarDiv);
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._padZero = function(num)
 {
     return (num < 10)? '0' + num : num;
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._constructDate = function(d, m, y)
 {
     var date = new Date(y, m, d, this.selectedDate.hour, this.selectedDate.min, this.selectedDate.sec);
     return this.stdDateFormatter.format(date);
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._closeCalendar = function()
 {
@@ -663,7 +680,7 @@ org_apache_myfaces_PopupCalendar.prototype._closeCalendar = function()
         document.getElementById(this.myFacesInputDateClientId + ".month").value = this.selectedDate.month + 1;
         document.getElementById(this.myFacesInputDateClientId + ".year").value = this.selectedDate.year;
     }
-}
+};
 
 /*** Month Pulldown ***/
 
@@ -671,7 +688,7 @@ org_apache_myfaces_PopupCalendar.prototype._startDecMonth = function()
 {
     this.intervalID1 = setInterval((function()
     {
-        this._decMonth
+        this._decMonth();
     }).bind(this), 80);
 }
 
@@ -679,7 +696,7 @@ org_apache_myfaces_PopupCalendar.prototype._startIncMonth = function()
 {
     this.intervalID1 = setInterval((function()
     {
-        this._incMonth
+        this._incMonth();
     }).bind(this), 80);
 }
 
@@ -699,18 +716,18 @@ org_apache_myfaces_PopupCalendar.prototype._decMonth = function()
     this.selectedDate.month = this.selectedDate.month - 1;
     if (this.selectedDate.month < 0)
     {
-        this.selectedDate.month = 11
-        this.selectedDate.year--
+        this.selectedDate.month = 11;
+        this.selectedDate.year--;
     }
     this._constructCalendar()
-}
+};
 
 
 org_apache_myfaces_PopupCalendar.prototype._removeAllChildren = function(element)
 {
     while (element && element.hasChildNodes())
         element.removeChild(element.lastChild);
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._constructMonth = function()
 {
@@ -794,38 +811,38 @@ org_apache_myfaces_PopupCalendar.prototype._constructMonth = function()
 
         this.monthConstructed = true;
     }
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._popUpMonth = function()
 {
     this._constructMonth()
     this._fixPopupDomOrder(this.selectMonthDiv);
-    this.selectMonthDiv.style.visibility = (this.dom || this.ie)? "visible"    : "show"
+    this.selectMonthDiv.style.visibility = (this.dom || this.ie6)? "visible"    : "show";
     this.selectMonthDiv.style.left = parseInt(this._formatInt(this.calendarDiv.style.left), 10) + 50 + "px";
     this.selectMonthDiv.style.top = parseInt(this._formatInt(this.calendarDiv.style.top), 10) + 26 + "px";
 
     this._showPopupPostProcess(this.selectMonthDiv);
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._popDownMonth = function()
 {
     this.selectMonthDiv.style.visibility = "hidden";
     this._hidePopupPostProcess(this.selectMonthDiv);
-}
+};
 
 /*** Year Pulldown ***/
 
 org_apache_myfaces_PopupCalendar.prototype._incYear = function()
 {
-    for (i = 0; i < 7; i++)
+    for (var i = 0; i < 7; i++)
     {
-        newYear = (i + this.nStartingYear) + 1;
+        var newYear = (i + this.nStartingYear) + 1;
 
         this._createAndAddYear(newYear, i);
     }
     this.nStartingYear++;
     this.bClickOnCalendar = true;
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._createAndAddYear = function(newYear, i)
 {
@@ -850,20 +867,20 @@ org_apache_myfaces_PopupCalendar.prototype._createAndAddYear = function(newYear,
     }
 
     parentNode.setAttribute("userData",newYear);
-}
+};
 
 
 org_apache_myfaces_PopupCalendar.prototype._decYear = function()
 {
     for (i = 0; i < 7; i++)
     {
-        newYear = (i + this.nStartingYear) - 1;
+        var newYear = (i + this.nStartingYear) - 1;
 
         this._createAndAddYear(newYear, i);
     }
     this.nStartingYear--;
     this.bClickOnCalendar = true;
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._constructYear = function()
 {
@@ -1030,7 +1047,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructYear = function()
 
         this.yearConstructed = true;
     }
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._popDownYear = function()
 {
@@ -1040,22 +1057,22 @@ org_apache_myfaces_PopupCalendar.prototype._popDownYear = function()
     clearTimeout(this.timeoutID2);
     this.selectYearDiv.style.visibility = "hidden";
     this._hidePopupPostProcess(this.selectYearDiv);
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._popUpYear = function()
 {
     var leftOffset;
 	this._fixPopupDomOrder(this.selectYearDiv);
     this._constructYear();
-    this.selectYearDiv.style.visibility = (this.dom || this.ie) ? "visible" : "show";
+    this.selectYearDiv.style.visibility = (this.dom || this.ie6) ? "visible" : "show";
     leftOffset = parseInt(this._formatInt(this.calendarDiv.style.left), 10) + this.yearSpan.offsetLeft;
-    if (this.ie)
+    if (this.ie6)
         leftOffset += 6;
     this.selectYearDiv.style.left = leftOffset + "px";
     this.selectYearDiv.style.top = parseInt(this._formatInt(this.calendarDiv.style.top), 10) + 26 + "px";
 
     this._showPopupPostProcess(this.selectYearDiv);
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._appendCell = function(parentElement, value)
 {
@@ -1072,7 +1089,7 @@ org_apache_myfaces_PopupCalendar.prototype._appendCell = function(parentElement,
     }
 
     parentElement.appendChild(cell);
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._getDateStyle = function(datePointer)
 {
@@ -1109,7 +1126,7 @@ org_apache_myfaces_PopupCalendar.prototype._getDateStyle = function(datePointer)
     }
 
     return sStyle;
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._getHolidayHint = function(datePointer)
 {
@@ -1126,7 +1143,7 @@ org_apache_myfaces_PopupCalendar.prototype._getHolidayHint = function(datePointe
     }
 
     return sHint;
-}
+};
 
 
 org_apache_myfaces_PopupCalendar.prototype._addWeekCell = function(currentRow, startDate, weekSelectable,
@@ -1188,7 +1205,7 @@ org_apache_myfaces_PopupCalendar.prototype._addWeekCell = function(currentRow, s
     }
 
     currentRow.appendChild(cell);
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
 {
@@ -1241,7 +1258,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
 
         var dividerCell = document.createElement("td");
         Element.setStyle(dividerCell, "width:1px;");
-        if(this.ie) //fix for https://issues.apache.org/jira/browse/TOMAHAWK-1184
+        if(this.ie6) //fix for https://issues.apache.org/jira/browse/TOMAHAWK-1184
         	dividerCell.setAttribute("rowSpan", "7");
         else	
         	dividerCell.setAttribute("rowspan", "7");
@@ -1409,7 +1426,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
     this.closeCalendarSpan.appendChild(closeButtonImg);
 
     this._recalculateElement(this.calendarDiv);
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._popUpCalendar = function(ctl, ctl2, format)
 {
@@ -1464,7 +1481,7 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar = function(ctl, ctl2, 
         }
     }
     this.ctlNow = ctl;
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._popUpCalendarForInputDate = function(clientId, format)
 {
@@ -1484,7 +1501,7 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendarForInputDate = function
         this.ctlNow = document.getElementById(clientId + ".day");
         this._popUpCalendar_Show(document.getElementById(clientId + ".day"));
     }
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._getStyle = function(ctl, property)
 {
@@ -1507,7 +1524,7 @@ org_apache_myfaces_PopupCalendar.prototype._getStyle = function(ctl, property)
        }
     }
 	return value;
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._popUpCalendar_Show = function(ctl)
 {
@@ -1600,7 +1617,7 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar_Show = function(ctl)
     this.calendarDiv.style.top = this.initData.fixedY == -1 ? top + "px": this.initData.fixedY;
     this._constructCalendar(1, this.selectedDate.month, this.selectedDate.year);
 
-    this.calendarDiv.style.visibility = (this.dom || this.ie)? "visible" : "show";
+    this.calendarDiv.style.visibility = (this.dom || this.ie6)? "visible" : "show";
     this.bCalendarHidden = false;
 
     setTimeout((function()
@@ -1611,7 +1628,7 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar_Show = function(ctl)
     this._showPopupPostProcess(this.calendarDiv);
 
     this.bClickOnCalendar = true;
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._getVisibleBodyRectangle = function()
 {
@@ -1655,7 +1672,7 @@ org_apache_myfaces_PopupCalendar.prototype._getVisibleBodyRectangle = function()
         visibleRect.bottom = visibleRect.top + document.body.clientHeight;
     }
     return visibleRect;
-}
+};
 
 org_apache_myfaces_PopupCalendar.prototype._formatInt = function(str)
 {
@@ -1672,7 +1689,7 @@ org_apache_myfaces_PopupCalendar.prototype._formatInt = function(str)
     }
     return str;
 
-}
+};
 
 function org_apache_myfaces_Rectangle()
 {
