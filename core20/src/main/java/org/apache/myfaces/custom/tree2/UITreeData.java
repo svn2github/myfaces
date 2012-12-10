@@ -155,11 +155,44 @@ public class UITreeData extends UIComponentBase implements NamingContainer, Tree
         if (event instanceof FacesEventWrapper)
         {
             FacesEventWrapper childEvent = (FacesEventWrapper) event;
-            String currNodeId = getNodeId();
-            setNodeId(childEvent.getNodeId());
+           // String currNodeId = getNodeId();
+           // setNodeId(childEvent.getNodeId());
+           // https://issues.apache.org/jira/browse/TOMAHAWK-1644
             FacesEvent nodeEvent = childEvent.getFacesEvent();
-            nodeEvent.getComponent().broadcast(nodeEvent);
-            setNodeId(currNodeId);
+           // nodeEvent.getComponent().broadcast(nodeEvent);
+            //setNodeId(currNodeId);
+            UIComponent source = nodeEvent.getComponent();
+            UIComponent compositeParent = UIComponent.getCompositeComponentParent(source);
+            FacesContext context =  getFacesContext();
+            if (compositeParent != null)
+            {
+                pushComponentToEL(context , compositeParent);
+            }
+            // Push the source as the current component
+            pushComponentToEL(context, source);
+
+            try
+            {
+                String currNodeId = getNodeId();
+                setNodeId(childEvent.getNodeId());
+                try
+                {
+                    source.broadcast(nodeEvent);
+                }
+                finally
+                {
+                    setNodeId(currNodeId);
+                }
+            }
+            finally
+            {
+                // Restore the current component
+                source.popComponentFromEL(context);
+                if (compositeParent != null)
+                {
+                    compositeParent.popComponentFromEL(context);
+                }
+            }
             return;
         }
         else if(event instanceof ToggleExpandedEvent)
