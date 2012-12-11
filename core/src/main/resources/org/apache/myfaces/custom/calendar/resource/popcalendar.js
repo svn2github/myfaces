@@ -1435,14 +1435,17 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar = function(ctl, ctl2, 
             this.selectedDate.date = dateSelected.getDate();
             this.selectedDate.month = dateSelected.getMonth();
 
-            var yearStr = dateSelected.getYear() + "";
+            //https://issues.apache.org/jira/browse/TOMAHAWK-1595
+            //http://de.selfhtml.org/javascript/objekte/date.htm#get_year
+            var fullYear = dateSelected.getFullYear;
+            var yearDetermined = parseInt( ((fullYear) ? dateSelected.getFullYear(): dateSelected.getYear()), 10);
 
-            if (yearStr.length < 4)
+            if (!fullYear && yearDetermined < 1000)
             {
-                yearStr = (parseInt(yearStr, 10) + 1900) + "";
+                yearDetermined = yearDetermined + 1900;
             }
 
-            this.selectedDate.year = parseInt(yearStr, 10);
+            this.selectedDate.year = yearDetermined;
         }
         else
         {
