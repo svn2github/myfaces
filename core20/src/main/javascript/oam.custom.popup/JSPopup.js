@@ -5,7 +5,7 @@ var orgApacheMyfacesPopupFrameUnder;
 * fix for the div over control bug in ie
 */
 function orgApacheMyfacesPopupfixIE() {
-    if(document.all) {
+    if(document.all && !window.opera && !window.XMLHttpRequest) { //IE6 only
     	if(orgApacheMyfacesPopupCurrentlyOpenedPopup == null) return false;
     	var iframe = document.getElementById(orgApacheMyfacesPopupCurrentlyOpenedPopup.id+"_IFRAME");
 
