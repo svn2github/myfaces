@@ -23,6 +23,8 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTextRendererBase;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
 import org.apache.myfaces.custom.ajax.util.AjaxRendererUtils;
@@ -75,8 +77,35 @@ public class HtmlInputTextAjaxRenderer extends HtmlTextRendererBase implements A
         context.getExternalContext().getRequestMap().put(JAVASCRIPT_ENCODED, Boolean.TRUE);
     }
 
+    protected void renderInput(FacesContext facesContext, UIComponent component)
+          throws IOException
+      {
+          ResponseWriter writer = facesContext.getResponseWriter();
 
+          String clientId = component.getClientId(facesContext);
+          String value = org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils.getStringValue(facesContext, component);
 
+          writer.startElement(HTML.INPUT_ELEM, component);
+          writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+          writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
+          writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_TEXT, null);
+
+          //autocomplete needs to be off
+          //https://issues.apache.org/jira/browse/TOMAHAWK-1260
+          writer.writeAttribute("autocomplete", "off", null);
+          if (value != null)
+          {
+              writer.writeAttribute(HTML.VALUE_ATTR, value, JSFAttr.VALUE_ATTR);
+          }
+
+          HtmlRendererUtils.renderHTMLAttributes(writer, component, HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED);
+          if (isDisabled(facesContext, component))
+          {
+              writer.writeAttribute(HTML.DISABLED_ATTR, Boolean.TRUE, null);
+          }
+
+          writer.endElement(HTML.INPUT_ELEM);
+      }
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException
     {
