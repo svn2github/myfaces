@@ -68,6 +68,13 @@
                 popupTodayString="#{example_messages['popup_today_string']}"
                 popupDateFormat="MM/dd/yyyy" popupWeekString="#{example_messages['popup_week_string']}"
                 helpText="MM/DD/YYYY"/>
+            <t:inputCalendar id="fourthOne" monthYearRowClass="yearMonthHeader" weekRowClass="weekHeader" popupButtonStyleClass="standard_bold"
+               currentDayCellClass="currentDayCell" value="#{calendarBean.thirdDate}" renderAsPopup="true" renderImageButton="true"
+               popupTodayString="#{example_messages['popup_today_string']}"
+               popupDateFormat="MM/dd/yyyy" popupWeekString="#{example_messages['popup_week_string']}"
+               helpText="MM/DD/YYYY" popupButtonImageUrl="./images/document.png"
+               forceId="false"/>
+
 
             <h:inputText value="#{calendarBean.text}"/>
             <h:commandButton value="#{example_messages['js_submit']}" action="#{calendarBean.submitMethod}" />

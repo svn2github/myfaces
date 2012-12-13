@@ -316,4 +316,13 @@ public abstract class AbstractHtmlInputCalendar
      *   defaultValue = "day" 
      */
     public abstract String getPopupSelectMode();
+
+    /**
+     * if set to true then the button is rendered
+     * as an image button. popupButtonImageUrl is the
+     * value for the image to be rendered.
+     *
+     * @JSFProperty
+     */
+    public abstract boolean isRenderImageButton();
 }

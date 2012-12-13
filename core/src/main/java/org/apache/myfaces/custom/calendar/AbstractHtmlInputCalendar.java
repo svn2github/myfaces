@@ -206,6 +206,14 @@ public abstract class AbstractHtmlInputCalendar
     public abstract boolean isRenderPopupButtonAsImage();
 
     /**
+     * If true, renders a calendar icon instead of the button of the calendar.
+     *
+     * @JSFProperty
+     *   defaultValue = "false"
+     */
+    public abstract boolean isRenderImageButton();
+
+    /**
      * Defines the date format used by the java-script popup on client.
      * 
      * @JSFProperty 

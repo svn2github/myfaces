@@ -945,6 +945,7 @@ public class HtmlCalendarRenderer
         throws IOException
     {
         boolean renderButtonAsImage = false;
+        boolean renderAsImageButton = false;
         String popupButtonStyle = null;
         String popupButtonStyleClass = null;
 
@@ -952,12 +953,14 @@ public class HtmlCalendarRenderer
         {
             HtmlInputCalendar calendar = (HtmlInputCalendar)uiComponent;
             renderButtonAsImage = calendar.isRenderPopupButtonAsImage();
+            renderAsImageButton = calendar.isRenderImageButton();
             popupButtonStyle = calendar.getPopupButtonStyle();
             popupButtonStyleClass = calendar.getPopupButtonStyleClass();
         }
 
-        if (!renderButtonAsImage) {
+        if (!renderButtonAsImage && !renderAsImageButton) {
             // render the button
+
             writer.startElement(HTML.INPUT_ELEM, uiComponent);
             writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_BUTTON, null);
 
@@ -969,34 +972,41 @@ public class HtmlCalendarRenderer
                 popupButtonString="...";
             writer.writeAttribute(HTML.VALUE_ATTR, StringEscapeUtils.escapeJavaScript(popupButtonString), null);
 
-            if(popupButtonStyle != null)
-            {
-                writer.writeAttribute(HTML.STYLE_ATTR, popupButtonStyle, null);
+            writeButtonStyle(writer, popupButtonStyle);
+
+            writeButtonStyleClass(writer, popupButtonStyleClass);
+
+            writer.endElement(HTML.INPUT_ELEM);
+        } else if (!renderButtonAsImage && renderAsImageButton) {
+            writer.startElement(HTML.BUTTON_ELEM, uiComponent);
+            writer.writeAttribute(HTML.ONCLICK_ATTR,
+                    prov.getFunctionCall(facesContext, uiComponent, dateFormat)+"; return false;",
+                    null);
+            String imgUrl = (String) uiComponent.getAttributes().get("popupButtonImageUrl");
+            if (popupButtonString == null && imgUrl == null || imgUrl.trim().equals("")) {
+                popupButtonString = "...";
+            }  else if (popupButtonString == null) {
+                popupButtonString = "";
             }
 
-            if(popupButtonStyleClass != null)
-            {
-                writer.writeAttribute(HTML.CLASS_ATTR, popupButtonStyleClass, null);
-            }
-            
-            writer.endElement(HTML.INPUT_ELEM);
+            writeButtonStyle(writer, popupButtonStyle);
+            writeButtonStyleClass(writer, popupButtonStyleClass);
+
+            writer.startElement(HTML.IMG_ELEM, uiComponent);
+            writer.writeAttribute(HTML.CLASS_ATTR, "button-image", null);
+            writeImageURL(writer, facesContext, uiComponent);
+            writer.endElement(HTML.IMG_ELEM);
+
+            writer.startElement(HTML.SPAN_ELEM, uiComponent);
+            writer.writeAttribute(HTML.CLASS_ATTR, "button-text", null);
+            writer.write(popupButtonString);
+            writer.endElement(HTML.SPAN_ELEM);
+
+            writer.endElement(HTML.BUTTON_ELEM);
         } else {
             // render the image
             writer.startElement(HTML.IMG_ELEM, uiComponent);
-            AddResource addResource = AddResourceFactory.getInstance(facesContext);
-
-            String imgUrl = (String) uiComponent.getAttributes().get("popupButtonImageUrl");
-
-            if(imgUrl!=null)
-            {
-                writer.writeAttribute(HTML.SRC_ATTR, addResource.getResourceUri(facesContext, imgUrl), null);
-            }
-            else
-            {
-                //writer.writeAttribute(HTML.SRC_ATTR, addResource.getResourceUri(facesContext, HtmlCalendarRenderer.class, "images/calendar.gif"), null);
-                Resource res = facesContext.getApplication().getResourceHandler().createResource("calendar.gif", "oam.custom.calendar.images");
-                writer.writeAttribute(HTML.SRC_ATTR, res.getRequestPath(), null);
-            }
+            writeImageURL(writer, facesContext, uiComponent);
 
             if(popupButtonStyle != null)
             {
@@ -1019,6 +1029,35 @@ public class HtmlCalendarRenderer
         }
     }
 
+    private static void writeImageURL(ResponseWriter writer, FacesContext facesContext, UIComponent uiComponent) throws IOException  {
+        AddResource addResource = AddResourceFactory.getInstance(facesContext);
+
+        String imgUrl = (String) uiComponent.getAttributes().get("popupButtonImageUrl");
+
+        if (imgUrl != null)
+        {
+            writer.writeAttribute(HTML.SRC_ATTR, addResource.getResourceUri(facesContext, imgUrl), null);
+        } else
+        {
+            writer.writeAttribute(HTML.SRC_ATTR, addResource.getResourceUri(facesContext, HtmlCalendarRenderer.class, "images/calendar.gif"), null);
+        }
+    }
+
+    private static void writeButtonStyleClass(ResponseWriter writer, String popupButtonStyleClass) throws IOException
+    {
+        if(popupButtonStyleClass != null)
+        {
+            writer.writeAttribute(HTML.CLASS_ATTR, popupButtonStyleClass, null);
+        }
+    }
+
+    private static void writeButtonStyle(ResponseWriter writer, String popupButtonStyle) throws IOException
+    {
+        if(popupButtonStyle != null)
+        {
+            writer.writeAttribute(HTML.STYLE_ATTR, popupButtonStyle, null);
+        }
+    }
 
     private void writeMonthYearHeader(FacesContext facesContext, ResponseWriter writer, UIInput inputComponent, Calendar timeKeeper,
                                       int currentDay, String[] weekdays,
