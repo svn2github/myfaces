@@ -1043,18 +1043,15 @@ public class HtmlCalendarRenderer
         }
     }
 
-    private static void writeButtonStyleClass(ResponseWriter writer, String popupButtonStyleClass) throws IOException
-    {
-        if(popupButtonStyleClass != null)
-        {
+    private static void writeButtonStyleClass(ResponseWriter writer, String popupButtonStyleClass) throws IOException {
+        if(popupButtonStyleClass != null) {
             writer.writeAttribute(HTML.CLASS_ATTR, popupButtonStyleClass, null);
         }
     }
 
     private static void writeButtonStyle(ResponseWriter writer, String popupButtonStyle) throws IOException
     {
-        if(popupButtonStyle != null)
-        {
+        if(popupButtonStyle != null) {
             writer.writeAttribute(HTML.STYLE_ATTR, popupButtonStyle, null);
         }
     }

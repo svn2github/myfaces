@@ -721,15 +721,18 @@ public class HtmlCalendarRenderer
 
             writer.endElement(HTML.INPUT_ELEM);
 
-        } else if (!renderButtonAsImage && renderAsImageButton) {
+        } else if (!renderButtonAsImage && renderAsImageButton)
+        {
             writer.startElement(HTML.BUTTON_ELEM, uiComponent);
             writer.writeAttribute(HTML.ONCLICK_ATTR,
-                    prov.getFunctionCall(facesContext, uiComponent, dateFormat)+"; return false;",
+                    prov.getFunctionCall(facesContext, uiComponent, dateFormat) + "; return false;",
                     null);
             String imgUrl = (String) uiComponent.getAttributes().get("popupButtonImageUrl");
-            if (popupButtonString == null && imgUrl == null || imgUrl.trim().equals("")) {
+            if (popupButtonString == null && imgUrl == null || imgUrl.trim().equals(""))
+            {
                 popupButtonString = "...";
-            }  else if (popupButtonString == null) {
+            } else if (popupButtonString == null)
+            {
                 popupButtonString = "";
             }
 
