@@ -387,7 +387,7 @@ public class HtmlCalendarRenderer
             String calendarVar = JavascriptUtils.getValidJavascriptName(
                     inputCalendar.getClientId(facesContext)+"CalendarVar",false);
 
-            writer.writeText(calendarVar+"=new org_apache_myfaces_PopupCalendar();\n",null);
+            writer.writeText(calendarVar+"=new org.apache.myfaces.PopupCalendar();\n",null);
             writer.writeText(getLocalizedLanguageScript(facesContext,symbols,
                                                         timeKeeper.getFirstDayOfWeek(),inputCalendar,calendarVar)+"\n",null);
             // pass the selectMode attribute
