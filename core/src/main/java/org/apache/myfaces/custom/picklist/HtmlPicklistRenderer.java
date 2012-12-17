@@ -56,10 +56,10 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlListboxRendererBase
 public class HtmlPicklistRenderer extends HtmlListboxRendererBase
 {
 
-    private static final String FUNCTION_ADD_TO_SELECTED = "myfaces_picklist_addToSelected";
-    private static final String FUNCTION_ADD_ALL_TO_SELECTED = "myfaces_picklist_addAllToSelected";    
-    private static final String FUNCTION_REMOVE_FROM_SELECTED = "myfaces_picklist_removeFromSelected";
-    private static final String FUNCTION_REMOVE_ALL_FROM_SELECTED = "myfaces_picklist_removeAllFromSelected";
+    private static final String FUNCTION_ADD_TO_SELECTED = "org.apache.myfaces.Picklist.addToSelected";
+    private static final String FUNCTION_ADD_ALL_TO_SELECTED = "org.apache.myfaces.Picklist.addAllToSelected";    
+    private static final String FUNCTION_REMOVE_FROM_SELECTED = "org.apache.myfaces.Picklist.removeFromSelected";
+    private static final String FUNCTION_REMOVE_ALL_FROM_SELECTED = "org.apache.myfaces.Picklist.removeAllFromSelected";
 
     private static final String AVAILABLE_SUFFIX = "_AVAILABLE";
     private static final String SELECTED_SUFFIX = "_SELECTED";

@@ -16,87 +16,93 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- 
- /**
+
+/**
  * @author Bruno Aranda (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
- 
-// moves all the items to the selected list
-function myfaces_picklist_addAllToSelected(availableListId, selectedListId, hiddenId)
-{
-	var availableList = document.getElementById(availableListId);
-    var selectedList = document.getElementById(selectedListId);
 
-	myfaces_picklist_moveAll(availableList, selectedList, hiddenId);
-	myfaces_picklist_updateHidden(selectedList, hiddenId);
-}
+window.org = window.org || {};
+org.apache = org.apache || {};
+org.apache.myfaces = org.apache.myfaces || {};
+
+if (!org.apache.myfaces.Picklist) {
+    org.apache.myfaces.Picklist = {};
+
+// moves all the items to the selected list
+    org.apache.myfaces.Picklist.addAllToSelected = function (availableListId, selectedListId, hiddenId) {
+        var availableList = document.getElementById(availableListId);
+        var selectedList = document.getElementById(selectedListId);
+
+        org.apache.myfaces.Picklist.moveAll(availableList, selectedList, hiddenId);
+        org.apache.myfaces.Picklist.updateHidden(selectedList, hiddenId);
+    };
 
 // removes all the items from the selected list
-function myfaces_picklist_removeAllFromSelected(availableListId, selectedListId, hiddenId)
-{
-    var availableList = document.getElementById(availableListId);
-    var selectedList = document.getElementById(selectedListId);
+    org.apache.myfaces.Picklist.removeAllFromSelected = function (availableListId, selectedListId, hiddenId) {
+        var availableList = document.getElementById(availableListId);
+        var selectedList = document.getElementById(selectedListId);
 
-	myfaces_picklist_moveAll(selectedList, availableList, hiddenId);
-	myfaces_picklist_updateHidden(selectedList, hiddenId);
-}
+        org.apache.myfaces.Picklist.moveAll(selectedList, availableList, hiddenId);
+        org.apache.myfaces.Picklist.updateHidden(selectedList, hiddenId);
+    };
 
 // moves an item to the selected list
-function myfaces_picklist_addToSelected(availableListId, selectedListId, hiddenId)
-{
-	var availableList = document.getElementById(availableListId);
-    var selectedList = document.getElementById(selectedListId);
+    org.apache.myfaces.Picklist.addToSelected = function (availableListId, selectedListId, hiddenId) {
+        var availableList = document.getElementById(availableListId);
+        var selectedList = document.getElementById(selectedListId);
 
-	myfaces_picklist_move(availableList, selectedList, hiddenId);
-	myfaces_picklist_updateHidden(selectedList, hiddenId);
-}
+        org.apache.myfaces.Picklist.move(availableList, selectedList, hiddenId);
+        org.apache.myfaces.Picklist.updateHidden(selectedList, hiddenId);
+    };
 
 // removes an item from the selected list
-function myfaces_picklist_removeFromSelected(availableListId, selectedListId, hiddenId)
-{
-    var availableList = document.getElementById(availableListId);
-    var selectedList = document.getElementById(selectedListId);
+    org.apache.myfaces.Picklist.removeFromSelected = function (availableListId, selectedListId, hiddenId) {
+        var availableList = document.getElementById(availableListId);
+        var selectedList = document.getElementById(selectedListId);
 
-	myfaces_picklist_move(selectedList, availableList, hiddenId);
-	myfaces_picklist_updateHidden(selectedList, hiddenId);
-}
+        org.apache.myfaces.Picklist.move(selectedList, availableList, hiddenId);
+        org.apache.myfaces.Picklist.updateHidden(selectedList, hiddenId);
+    };
 
-function myfaces_picklist_move(fromList, toList, hiddenId) {
-	// Return, if no items selected
-	var selectedIndex = fromList.selectedIndex;
-	if(selectedIndex < 0) { return; }
+    org.apache.myfaces.Picklist.move = function (fromList, toList, hiddenId) {
+        // Return, if no items selected
+        var selectedIndex = fromList.selectedIndex;
+        if (selectedIndex < 0) {
+            return;
+        }
 
-	// Decremental loop, so the index is not affected in the moves
-	for (var i = fromList.options.length - 1; i >= 0; i--) {
-		if(fromList.options[i].selected) {
-			var tLen = toList.options.length;
-			toList.options[tLen] = new Option(fromList.options[i].text);
-			toList.options[tLen].value = fromList.options[i].value;
-			fromList.options[i] = null;
-		}
-	}
-}
+        // Decremental loop, so the index is not affected in the moves
+        for (var i = fromList.options.length - 1; i >= 0; i--) {
+            if (fromList.options[i].selected) {
+                var tLen = toList.options.length;
+                toList.options[tLen] = new Option(fromList.options[i].text);
+                toList.options[tLen].value = fromList.options[i].value;
+                fromList.options[i] = null;
+            }
+        }
+    };
 
-function myfaces_picklist_moveAll(fromList, toList, hiddenId) {
+    org.apache.myfaces.Picklist.moveAll = function (fromList, toList, hiddenId) {
 
-	// Decremental loop, so the index is not affected in the moves
-	for (var i = fromList.options.length - 1; i >= 0; i--) {
-		var tLen = toList.options.length;
-		toList.options[tLen] = new Option(fromList.options[i].text);
-		toList.options[tLen].value = fromList.options[i].value;
-		fromList.options[i] = null;
-	}
-}
+        // Decremental loop, so the index is not affected in the moves
+        for (var i = fromList.options.length - 1; i >= 0; i--) {
+            var tLen = toList.options.length;
+            toList.options[tLen] = new Option(fromList.options[i].text);
+            toList.options[tLen].value = fromList.options[i].value;
+            fromList.options[i] = null;
+        }
+    };
 
 // Selection - invoked on submit
-function myfaces_picklist_updateHidden(selectedList, hiddenId) {
-	var hiddenField = document.getElementById(hiddenId);
-	
-	var arrValues = new Array(selectedList.options.length);
-	for (var i = 0; i<selectedList.options.length; i++) {
-	    arrValues[i] = selectedList.options[i].value;
-	}
-	
-	hiddenField.value = arrValues.join();
+    org.apache.myfaces.Picklist.updateHidden = function(selectedList, hiddenId) {
+        var hiddenField = document.getElementById(hiddenId);
+
+        var arrValues = new Array(selectedList.options.length);
+        for (var i = 0; i < selectedList.options.length; i++) {
+            arrValues[i] = selectedList.options[i].value;
+        }
+
+        hiddenField.value = arrValues.join();
+    };
 }
