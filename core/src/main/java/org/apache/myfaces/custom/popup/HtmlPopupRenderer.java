@@ -174,7 +174,7 @@ public class HtmlPopupRenderer
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
         writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
-        writer.writeText("var "+popupId+"=new orgApacheMyfacesPopup('"+clientId+"',"+
+        writer.writeText("var "+popupId+"=new org.apache.myfaces.Popup('"+clientId+"',"+
                 (displayAtDistanceX==null?-5:displayAtDistanceX.intValue())+","+
                 (displayAtDistanceY==null?-5:displayAtDistanceY.intValue())+");",null);
         writer.endElement(HTML.SCRIPT_ELEM);
