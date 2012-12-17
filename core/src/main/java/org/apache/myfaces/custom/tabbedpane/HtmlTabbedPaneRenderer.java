@@ -454,7 +454,7 @@ public class HtmlTabbedPaneRenderer
                 
                 writer.writeAttribute(HTML.ONCLICK_ATTR,
                                       onclickEvent
-                                      + "return myFaces_showPanelTab("
+                                      + "return org.apache.myfaces.DynamicTabs.showPanelTab("
                                       +tabIndex+",'"+getTabIndexSubmitFieldIDAndName(tabbedPane, facesContext)+"',"
                                       +'\''+getHeaderCellID(tab, facesContext)+"','"+tab.getClientId(facesContext) + TAB_DIV_SUFFIX +"',"
                                       +getHeaderCellsIDsVar(tabbedPane,facesContext)+','+getTabsIDsVar(tabbedPane,facesContext)+','

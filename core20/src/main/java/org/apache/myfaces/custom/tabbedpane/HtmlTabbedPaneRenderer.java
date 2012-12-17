@@ -503,7 +503,7 @@ public class HtmlTabbedPaneRenderer
                 String activeSubStyleUserClass = tabbedPane.getActiveSubStyleClass();
                 String inactiveSubStyleUserClass = tabbedPane.getInactiveSubStyleClass();
                 
-                String serverSideScript = "return myFaces_showPanelTab("
+                String serverSideScript = "return org.apache.myfaces.DynamicTabs.showPanelTab("
                     +tabIndex+",'"+getTabIndexSubmitFieldIDAndName(tabbedPane, facesContext)+"',"
                     +'\''+getHeaderCellID(tab, facesContext)+"','"+tab.getClientId(facesContext) + TAB_DIV_SUFFIX +"',"
                     +getHeaderCellsIDsVar(tabbedPane,facesContext)+','+getTabsIDsVar(tabbedPane,facesContext)+','
