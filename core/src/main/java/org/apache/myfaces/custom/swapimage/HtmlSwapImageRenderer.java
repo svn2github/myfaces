@@ -97,8 +97,8 @@ public class HtmlSwapImageRenderer
 
                 if (swapImageUrl != null)
                 {
-                    writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, "SI_MM_swapImage('" + getClientId(facesContext, uiComponent) + "','','" + facesContext.getExternalContext().encodeResourceURL(swapImageUrl) + "',1);", null);
-                    writer.writeAttribute(HTML.ONMOUSEOUT_ATTR, "SI_MM_swapImgRestore();", null);
+                    writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, "org.apache.myfaces.SwapImage.swapImage('" + getClientId(facesContext, uiComponent) + "','','" + facesContext.getExternalContext().encodeResourceURL(swapImageUrl) + "',1);", null);
+                    writer.writeAttribute(HTML.ONMOUSEOUT_ATTR, "org.apache.myfaces.SwapImage.restore();", null);
                 }
             }
 

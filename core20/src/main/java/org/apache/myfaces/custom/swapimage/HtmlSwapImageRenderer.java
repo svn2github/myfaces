@@ -115,10 +115,10 @@ public class HtmlSwapImageRenderer
                 {
                     HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, HTML.ONMOUSEOVER_ATTR, uiComponent, 
                             ClientBehaviorEvents.MOUSEOVER, null, behaviors, HTML.ONMOUSEOVER_ATTR, swapImage.getOnmouseover(),
-                            "SI_MM_swapImage('" + getClientId(facesContext, uiComponent) + "','','" + facesContext.getExternalContext().encodeResourceURL(swapImageUrl) + "',1);");
+                            "org.apache.myfaces.SwapImage.swapImage('" + getClientId(facesContext, uiComponent) + "','','" + facesContext.getExternalContext().encodeResourceURL(swapImageUrl) + "',1);");
                     HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, HTML.ONMOUSEOUT_ATTR, uiComponent, 
                             ClientBehaviorEvents.MOUSEOUT, null, behaviors, HTML.ONMOUSEOUT_ATTR, swapImage.getOnmouseout(),
-                            "SI_MM_swapImgRestore();");
+                            "org.apache.myfaces.SwapImage.restore();");
                 }
                 else
                 {
@@ -137,8 +137,8 @@ public class HtmlSwapImageRenderer
             {
                 if (swapImageUrl != null)
                 {
-                    writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, "SI_MM_swapImage('" + getClientId(facesContext, uiComponent) + "','','" + facesContext.getExternalContext().encodeResourceURL(swapImageUrl) + "',1);", null);
-                    writer.writeAttribute(HTML.ONMOUSEOUT_ATTR, "SI_MM_swapImgRestore();", null);
+                    writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, "org.apache.myfaces.SwapImage.swapImage('" + getClientId(facesContext, uiComponent) + "','','" + facesContext.getExternalContext().encodeResourceURL(swapImageUrl) + "',1);", null);
+                    writer.writeAttribute(HTML.ONMOUSEOUT_ATTR, "org.apache.myfaces.SwapImage.restore();", null);
                 }
                 else
                 {
