@@ -561,7 +561,7 @@ public class HtmlTreeRenderer extends Renderer
             if (node.getChildCount() > 0)
             {
                 String onClick = new StringBuffer()
-                    .append("treeNavClick('")
+                    .append("org.apache.myfaces.Tree.treeNavClick('")
                     .append(spanId)
                     .append("', '")
                     .append(image.getClientId(context))

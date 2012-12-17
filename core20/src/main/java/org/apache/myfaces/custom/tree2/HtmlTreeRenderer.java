@@ -524,7 +524,7 @@ public class HtmlTreeRenderer extends Renderer
         String imageId = IMAGE_PREFIX+tree.createUniqueId(context, null).substring(UIViewRoot.UNIQUE_ID_PREFIX.length());//IMAGE_PREFIX+(counter++);
         image.setId(imageId);
         image.setUrl(navSrcUrl);
-        
+
         Map imageAttrs = image.getAttributes();
         imageAttrs.put(HTML.WIDTH_ATTR, "19");
         imageAttrs.put(HTML.HEIGHT_ATTR, "18");
@@ -569,7 +569,7 @@ public class HtmlTreeRenderer extends Renderer
             if (node.getChildCount() > 0)
             {
                 String onClick = new StringBuffer()
-                    .append("treeNavClick('")
+                    .append("org.apache.myfaces.Tree.treeNavClick('")
                     .append(spanId)
                     .append("', '")
                     .append(image.getClientId(context))
