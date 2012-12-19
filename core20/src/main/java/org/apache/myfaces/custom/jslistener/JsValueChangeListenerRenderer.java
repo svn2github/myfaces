@@ -105,7 +105,7 @@ public class JsValueChangeListenerRenderer
             expressionValue = expressionValue.replaceAll("\"","\\\"");
 
 
-            String methodCall = "orgApacheMyfacesJsListenerSetExpressionProperty('"+
+            String methodCall = "org.apache.myfaces.JSListener.setExpressionProperty('"+
                     parent.getClientId(getFacesContext())+"','"+
                     forComponentId+"',"+
                     (property==null?"null":"'"+property+"'")+
