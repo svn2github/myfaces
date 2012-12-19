@@ -337,7 +337,7 @@ public class HtmlPicklistRenderer extends HtmlListboxRendererBase
         {
             if (n > 0)
             {
-                sb.append(",");
+                sb.append("|MFVAL_DIV|");
             }
             String value = (String) i.next();
             sb.append(value);
