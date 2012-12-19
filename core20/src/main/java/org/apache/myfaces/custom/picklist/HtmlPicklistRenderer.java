@@ -100,7 +100,7 @@ public class HtmlPicklistRenderer extends HtmlListboxRendererBase
             }
             else
             {
-                String[] reqValues = valuesInline[0].split(",");
+                String[] reqValues = valuesInline[0].split("\\|MFVAL\\_DIV\\|");
                 ((EditableValueHolder) uiComponent)
                 .setSubmittedValue(reqValues);
             }

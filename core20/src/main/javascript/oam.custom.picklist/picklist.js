@@ -102,7 +102,9 @@ if (!org.apache.myfaces.Picklist) {
         for (var i = 0; i < selectedList.options.length; i++) {
             arrValues[i] = selectedList.options[i].value;
         }
-
-        hiddenField.value = arrValues.join();
+        //https://issues.apache.org/jira/browse/TOMAHAWK-1653
+        //we set a neutral divider string, which allows
+        //comma and other dividiers to be used
+        hiddenField.value = arrValues.join("|MFVAL_DIV|");
     };
 }
