@@ -36,8 +36,8 @@ import org.apache.myfaces.component.html.ext.HtmlInputText;
  */
 public abstract class AbstractHtmlInputTextHelp extends HtmlInputText
 {
-    public static final String JS_FUNCTION_SELECT_TEXT = "selectText";
-    public static final String JS_FUNCTION_RESET_HELP = "resetHelpValue";
+    public static final String JS_FUNCTION_SELECT_TEXT = "org.apache.myfaces.InputTextHelp.selectText";
+    public static final String JS_FUNCTION_RESET_HELP = "org.apache.myfaces.InputTextHelp.resetHelpValue";
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlInputTextHelp";
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.TextHelp";
 
